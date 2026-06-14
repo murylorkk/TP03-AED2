@@ -2,8 +2,8 @@
 #define ARVORE_H
 
 struct arvore_bin {
-    int chave;  // atributo que está sendo indexado
-    int rrn;    // posição do registro no arquivo (fseek)
+    int chave;  // atributo que esta sendo indexado
+    int rrn;    // posicao do registro no arquivo
     struct arvore_bin* esq;
     struct arvore_bin* dir;
 };
