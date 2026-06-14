@@ -6,6 +6,7 @@
 #include "TAD_arv_bin_pesquisa.h"
 #include "TAD_arquivo.h"
 #include "TAD_hash.h"
+#include "TAD_busca_sequencial.h"
 
 // RRN = Relative Record Number
 // RRN = numero relativo do registro no arquivo binario
@@ -161,8 +162,8 @@ int main() {
     printf("Total de colisoes na Hash: %d\n\n", tabela_hash.colisoes);
 
     /* ============================================================
-       QUESTAO 3: BUSCA SEQUENCIAL NO ARQUIVO PELO ATRIBUTO CHAVE
-       ============================================================ */
+        QUESTAO 3: BUSCA SEQUENCIAL NO ARQUIVO PELO ATRIBUTO CHAVE
+        ============================================================ */
 
     printf("=== Estrategia 3: Busca Sequencial no Arquivo (chave = matricula) ===\n");
     printf("%-5s %-10s %-15s %s\n", "#", "Chave", "Tempo (s)", "Nome encontrado");
@@ -173,15 +174,9 @@ int main() {
     for (int i = 0; i < NUM_BUSCAS; i++) {
         clock_t ini_busca = clock();
 
-        int achou = 0;
-        rewind(arq);
-
-        while (fread(&reg_temp, sizeof(Registro), 1, arq) == 1) {
-            if (reg_temp.matricula == chaves_teste[i]) {
-                achou = 1;
-                break;
-            }
-        }
+        // Utiliza o TAD criado para a Questao 3
+        long num_reg = busca_sequencial_chave(arq, chaves_teste[i], &reg_temp);
+        int achou = (num_reg >= 0);
 
         clock_t fim_busca = clock();
 
