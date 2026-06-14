@@ -1,4 +1,3 @@
-
 #ifndef TAD_ARQUIVO_H
 #define TAD_ARQUIVO_H
 
@@ -10,7 +9,7 @@
 #define NUM_BUSCAS 30
 
 typedef struct {
-    int    matricula; //atributo chave
+    int    matricula; // atributo chave
     char   nome[TAM_NOME];
     char   curso[TAM_CURSO];
     double cr;
@@ -24,5 +23,7 @@ long total_registros(FILE *arq);
 void gerar_arquivo(int n);
 
 void sortear_chaves(FILE *arq, int *chaves, int qtd, long total);
+
+double tempo_agora(void);
 
 #endif
