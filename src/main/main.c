@@ -36,9 +36,7 @@ int main(){
         }
     }
 
-    // =========================================================================
-    // DICA 2: IMPRESSÃO DOS PARES PARA ARQUIVOS PEQUENOS
-    // =========================================================================
+    // implementação da dica 2: impressão dos pares para arquivos pequenos
     if (total <= 20) {
         printf("\n--- DICA 2: PARES <CHAVE, RRN> NA ARVORE (Em Ordem) ---\n");
         imprimir_em_ordem(raiz); 
@@ -62,7 +60,6 @@ int main(){
 
         long num_reg = buscar_arv_bin_pesquisa(raiz, chaves_teste[i]);
         
-        // Vai no disco ler os dados do aluno usando ponteiro
         int achou = (num_reg >= 0) && ler_registro_disco(arq, num_reg, &reg_temp);
 
         clock_t fim_busca = clock();
@@ -78,23 +75,22 @@ int main(){
     printf("----------------------------------------------------\n");
     printf("Tempo medio da Estrategia 1 (%d buscas): %.9f s\n", NUM_BUSCAS, soma_tempo / NUM_BUSCAS);
 
+    //espaço para outras questões 2 e 3
 
-   // =========================================================================
-    // ESTRATÉGIA 4: BUSCA POR FAIXA (ANO DE INGRESSO > X) USANDO ÁRVORE BINÁRIA
-    // =========================================================================
+
+
+    // questão 4: busca por faixa (ano de ingresso > X) usando árvore binária
     printf("\n--- MONTANDO INDICE DA ESTRATEGIA 4 ---\n");
     Arvore_bin* raiz_ano = criar_arv_bin_pesquisa();
     
     rewind(arq); 
     rrn_atual = 0;
 
-    // Lendo para montar a árvore secundária
     while (fread(&reg_temp, sizeof(Registro), 1, arq) == 1) {
         raiz_ano = inserir_arv_bin_pesquisa(raiz_ano, reg_temp.ano_ingresso, rrn_atual);
         rrn_atual++;
     }
 
-    // Criando 30 valores DISTINTOS para testar (ex: de 1990 a 2019)
     int anos_teste[NUM_BUSCAS];
     for(int i = 0; i < NUM_BUSCAS; i++) {
         anos_teste[i] = 1990 + i; 
@@ -110,10 +106,10 @@ int main(){
 
         clock_t inicio_q4 = clock();
         
-        // 1. A árvore devolve o vetor preenchido com os RRNs
+        // 1. a árvore devolve o vetor preenchido com os RRNs
         buscar_maior_que(raiz_ano, ano_minimo, resultados_rrn, &qtd_encontrados);
         
-        // 2. Leitura no disco dos resultados (sem printf para não travar o terminal)
+        // 2. leitura no disco dos resultados
         for (int j = 0; j < qtd_encontrados; j++) {
             ler_registro_disco(arq, resultados_rrn[j], &reg_temp);
         }
@@ -122,7 +118,6 @@ int main(){
         double dt_q4 = (double)(fim_q4 - inicio_q4) / CLOCKS_PER_SEC;
         soma_tempo_q4 += dt_q4;
 
-        // Imprime apenas algumas execuções para o professor ver que está rodando
         if (i < 5 || i == NUM_BUSCAS - 1) {
             printf("[%2d] Buscando Ano > %d | Encontrados: %-4d | Tempo: %.9f s\n", 
                    i+1, ano_minimo, qtd_encontrados, dt_q4);
@@ -133,9 +128,7 @@ int main(){
     double media_q4 = soma_tempo_q4 / NUM_BUSCAS;
     printf("Tempo MEDIO da Estrategia 4 (%d buscas): %.9f s\n", NUM_BUSCAS, media_q4);
 
-    // =========================================================================
-    // ESTRATÉGIA 5: BUSCA POR FAIXA COM BUSCA SEQUENCIAL DIRETO NO DISCO
-    // =========================================================================
+    // questão 5: busca por faixa com busca sequencial direto no disco
     printf("\n=== Estrategia 5: Busca Sequencial (Ano > X) ===\n");
     double soma_tempo_q5 = 0.0;
     
@@ -145,7 +138,6 @@ int main(){
         
         clock_t inicio_q5 = clock();
         
-        // OBRIGATÓRIO: Reposicionar o ponteiro do disco no início a cada nova busca!
         rewind(arq); 
         
         while (fread(&reg_temp, sizeof(Registro), 1, arq) == 1) {
@@ -167,7 +159,6 @@ int main(){
     double media_q5 = soma_tempo_q5 / NUM_BUSCAS;
     printf("Tempo MEDIO da Estrategia 5 (%d buscas): %.9f s\n", NUM_BUSCAS, media_q5);
     
-    // --- RESULTADO FINAL EXIGIDO PELO PDF ---
     printf("\n====================================================\n");
     printf("        COMPARATIVO FINAL DE DESEMPENHO (MEDIAS)      \n");
     printf("====================================================\n");
@@ -175,9 +166,7 @@ int main(){
     printf("Estrategia 5 (Varredura no HD)  : %.9f seg\n", media_q5);
     printf("====================================================\n");
 
-    // =========================================================================
-    // LIMPEZA DE MEMÓRIA E FECHAMENTO DO ARQUIVO
-    // =========================================================================
+    // limpeza e fechamento do arquivo
     destruir_arv_bin_pesquisa(raiz);
     destruir_arv_bin_pesquisa(raiz_ano);
     fclose(arq);

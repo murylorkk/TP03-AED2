@@ -33,11 +33,11 @@ Arvore_bin* inserir_arv_bin_pesquisa(Arvore_bin* a, int chave, int rrn) {
 
 int buscar_arv_bin_pesquisa(Arvore_bin* arv, int chave){
     if (arv == NULL){
-        return -1; // Retorna -1 indicando que não achou o RRN
+        return -1; // não achou o RRN
     }
 
     if (arv->chave == chave){
-        return arv->rrn; // Retorna a coordenada do arquivo
+        return arv->rrn; // retorna a coordenada do arquivo
     }
 
     if (chave < arv->chave){
@@ -50,27 +50,26 @@ int buscar_arv_bin_pesquisa(Arvore_bin* arv, int chave){
 
 void buscar_maior_que(Arvore_bin* arv, int valor_minimo, int* vetor_resultados, int* qtd) {
     if (arv != NULL) {
-        // Se a chave atual é menor ou igual ao mínimo, 
-        // os maiores só podem estar à direita. Ignoramos a esquerda.
+        // se a chave atual é menor ou igual ao mínimo, 
+        // os maiores só podem estar à direita, então ignoramos a esquerda.
         if (arv->chave <= valor_minimo) {
             buscar_maior_que(arv->dir, valor_minimo, vetor_resultados, qtd);
         } else {
             // Se a chave atual é MAIOR que o mínimo:
-            // 1. Procura na esquerda (podem ter valores maiores que o min lá)
+            // 1. procura na esquerda
             buscar_maior_que(arv->esq, valor_minimo, vetor_resultados, qtd);
             
-            // 2. Salva o RRN atual no vetor e incrementa o contador
+            // 2. salva o RRN atual no vetor e incrementa o contador
             vetor_resultados[*qtd] = arv->rrn;
             (*qtd)++;
             
-            // 3. Procura na direita (todos lá serão maiores)
+            // 3. procura na direita (todos serão maiores)
             buscar_maior_que(arv->dir, valor_minimo, vetor_resultados, qtd);
         }
     }
 }
 
 int obter_altura_bin(Arvore_bin* no) {
-    // ... (sua lógica original permanece idêntica)
     if (no == NULL){
         return 0;
     }
@@ -93,7 +92,6 @@ void imprimir_em_ordem(Arvore_bin *arv){
     }
 }
 
-// Você pode atualizar pre_ordem e pos_ordem da mesma forma que imprimir_em_ordem
 void imprimir_pre_ordem(Arvore_bin *arv){
     if (arv != NULL){
         printf("<Chave: %d, RRN: %d> ", arv->chave, arv->rrn);
